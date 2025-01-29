@@ -112,4 +112,23 @@
 #define LOG_INFO_ENABLED       ((LOG_LEVEL) >= (LOG_LEVEL_INFO))
 #define LOG_DBG_ENABLED        ((LOG_LEVEL) >= (LOG_LEVEL_DBG))
 
+#define LOG_STRING(level, data, length) do {  \
+                           if(level <= (LOG_LEVEL)) { \
+                             lwm2m_log_string(data, length); \
+                           } \
+                         } while (0)
+
+static inline void
+lwm2m_log_string(const char *text, size_t len)
+{
+  if(text == NULL) {
+    LOG_OUTPUT("(NULL STR)");
+    return;
+  }
+
+  for(int i = 0; i < len && *text != '\0'; i++, text++) {
+    LOG_OUTPUT("%c", *text);
+  }
+}
+
 #endif /* COAP_LOG_CONF_H_ */
